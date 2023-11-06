@@ -27,11 +27,13 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const jobCollection = client.db('dreamJob').collection('jobcategory');
+    const categoryCollection = client.db('dreamJob').collection('allCategory');
 
 
+    // jobcategory collection
     app.get('/jobcategory', async(req, res) =>{
         const cursor = jobCollection.find();
         const result = await cursor.toArray();
@@ -43,10 +45,18 @@ async function run() {
         const query = { _id: new ObjectId(id) }
 
         const options = {
-            projection: {job_categor : 1 }
+            projection: {job_category : 1 }
         }
         const result = await jobCollection.findOne(query, options);
         res.send(result);
+    })
+
+
+    // category collection
+    app.get('/allCategory', async(req, res) =>{
+      const cursor = categoryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
     })
 
 
