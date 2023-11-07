@@ -53,11 +53,17 @@ async function run() {
 
 
     // category collection
-    app.get('/allCategory', async(req, res) =>{
-      const cursor = categoryCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
+    app.post('/allCategory', async(req, res) =>{
+      const newJob = req.body;
+      console.log(newJob);
     })
+
+
+    // app.get('/allCategory', async(req, res) =>{
+    //   const cursor = categoryCollection.find();
+    //   const result = await cursor.toArray();
+    //   res.send(result);
+    // })
 
 
     // applyjob
@@ -99,6 +105,8 @@ async function run() {
       const result = await applyjobCollection.deleteOne(query);
       res.send(result);
     })
+
+
 
 
     // Send a ping to confirm a successful connection
