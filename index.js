@@ -79,6 +79,20 @@ async function run() {
       res.send(result);
     });
 
+    app.patch('/applyjob/:id', async(req, res) => {
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updatedApplyjob = req.body;
+      console.log(updatedApplyjob);
+      const updateDoc = {
+        $set: {
+          status: updatedApplyjob.status
+        }
+      };
+      const result = await applyjobCollection.updateOne(filter, updateDoc);
+      res.send(result);
+
+    })
     app.delete('/applyjob/:id', async (req, res) =>{
       const id = req.params.id;
       const query = {_id: new ObjectId(id)}
