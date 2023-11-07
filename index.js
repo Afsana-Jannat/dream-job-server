@@ -31,7 +31,7 @@ async function run() {
 
     const jobCollection = client.db('dreamJob').collection('jobcategory');
     const categoryCollection = client.db('dreamJob').collection('allCategory');
-
+    const applyjobCollection = client.db('dreamJob').collection('applyjob')
 
     // jobcategory collection
     app.get('/jobcategory', async(req, res) =>{
@@ -45,7 +45,7 @@ async function run() {
         const query = { _id: new ObjectId(id) }
 
         const options = {
-            projection: {job_category : 1 }
+            projection: {job_category : 1, image: 1 }
         }
         const result = await jobCollection.findOne(query, options);
         res.send(result);
@@ -56,6 +56,33 @@ async function run() {
     app.get('/allCategory', async(req, res) =>{
       const cursor = categoryCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
+    // applyjob
+
+    app.get('/applyjob', async(req, res) =>{
+      console.log(req.query.email);
+      let query = {}
+      if (req.query?.email){
+        query = { email: req.query.email }
+      }
+      const result = await applyjobCollection.find(query).toArray();
+      res.send(result);
+    })
+
+    app.post('/applyjob', async(req, res) =>{
+      const applyjob = req.body;
+      console.log(applyjob);
+      const result = await applyjobCollection.insertOne(applyjob);
+      res.send(result);
+    });
+
+    app.delete('/applyjob/:id', async (req, res) =>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await applyjobCollection.deleteOne(query);
       res.send(result);
     })
 
